@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "867438542683",
+    "project_id": "kateil",
+    "storage_bucket": "kateil.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:867438542683:android:79324fe8e329ce4e0ee47e",
+        "android_client_info": {
+          "package_name": "com.example.kateil"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDS1LeTNRQoe-jBo3v8pXSCwbAsxvbSwDs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
