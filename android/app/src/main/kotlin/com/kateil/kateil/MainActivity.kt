@@ -1,4 +1,4 @@
-package com.example.kateil
+package com.kateil.kateil
 
 import io.flutter.embedding.android.FlutterActivity
 

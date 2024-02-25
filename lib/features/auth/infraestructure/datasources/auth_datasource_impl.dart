@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kateil/features/auth/infraestructure/infraestructure.dart';
 
-
 import '../../domain/domain.dart';
 
 class AuthDataSourceImpl extends AuthDataSource {
@@ -10,9 +9,27 @@ class AuthDataSourceImpl extends AuthDataSource {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
-  Future<KUser> checkAuthStatus(String token) {
-    // TODO: implement checkAuthStatus
-    throw UnimplementedError();
+  Future<KUser> checkAuthStatus(String token) async{
+    try {
+
+      User? user = _auth.currentUser;
+      
+      // Usuario autenticado, ahora puedes acceder a los datos en Firestore.
+      String userId = user!.uid;
+      // Acceder al token de acceso
+      String? token = await user.getIdToken();
+
+      DocumentSnapshot userDoc =
+          await _firestore.collection('users').doc(userId).get();
+
+      final kUser = UserMapper.userJsonToEntity(
+          userDoc.data() as Map<String, dynamic>, userId, token!);
+
+      return kUser;
+          
+    } catch (e) {
+      throw WrongCredentials();
+    }
   }
 
   @override
@@ -23,13 +40,18 @@ class AuthDataSourceImpl extends AuthDataSource {
         password: password,
       );
 
+      User? user = userCredential.user;
+
       // Usuario autenticado, ahora puedes acceder a los datos en Firestore.
       String userId = userCredential.user!.uid;
+      // Acceder al token de acceso
+      String? token = await user!.getIdToken();
+
       DocumentSnapshot userDoc =
           await _firestore.collection('users').doc(userId).get();
 
-      final kUser =
-          UserMapper.userJsonToEntity(userDoc.data() as Map<String, dynamic>, userId);
+      final kUser = UserMapper.userJsonToEntity(
+          userDoc.data() as Map<String, dynamic>, userId, token!);
 
       return kUser;
     } catch (e) {
